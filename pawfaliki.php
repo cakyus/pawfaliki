@@ -1195,8 +1195,10 @@ function displayPage( $title, &$mode, $contents="" )
 			}
 			else
 			{
+                            if ( $contents == "" )
 				$contents = "This is the page for ".$title."!";
-				$mode = "editnew";
+
+                            $mode = "editnew";
 			}
 			$preview = $contents;
 			break;
