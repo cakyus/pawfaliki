@@ -3,7 +3,20 @@
   Example Style Sheet for Pawfaliki  
  *
  */
+/* wiki link */
 
+/* external link */
+a.external
+{
+	color: #77e;
+background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=") no-repeat scroll right center transparent;
+	padding-right: 13px;
+}
+a.external:hover
+{
+	color: black;
+	background-color: #77e;
+}
 /* page title - span.wiki_header */
 span.wiki_header
 {
@@ -47,19 +60,36 @@ span.optionalvalue
 }
 
 /* page contents */
-span.wiki_body
-{	
+.wiki_body
+{	background-color: #222;
+	display: block;
+	border-radius: 10px;
+	padding: 20px;
+	text-align: justify;
 }
 
+.wiki_body img
+{
+	max-width: 900px;
+	border: 0;
+}
+
+h2
+{
+	font-size: 120%;
+	margin: 0;
+	padding: 0;
+	border-bottom: solid 1px #aaa;
+}
 /* general bits & bobs */
 body
 {
-	background-color: black;
+	background-color: #111;
 	color: white; 
-	font-family: courier-new, monospace;
-	font-size: 12px;  
-	margin-left: 6px;
-	margin-right: 18px;
+	font-family: Helvetica, sans-serif;
+	font-size: 14pt;  
+	margin: 0 auto;
+	max-width: 900px;
 }
 
 /* horizontal rule */
@@ -67,7 +97,7 @@ hr
 {  
 	border-style: none;
 	border-top-style: solid;
-	border-width: 1px;
+	border-width: 4px;
 	border-color: #666666;
 }
 
@@ -75,20 +105,20 @@ hr
 a
 {
 	text-decoration: none;  
-	color: lime;
+	color: goldenrod;
 }
 
 /* link mouse-over */
 a:hover
 {
 	color: black;
-	background: lime;
+	background: goldenrod;
 }
 
 /* active link */
 a:active
 {
-	color: green;
+	color: goldenrod;
 }
 
 /* input */
@@ -96,10 +126,11 @@ input
 {	
 	font-family: courier-new, monospace;
 	font-size: 12px; 
-	color: lime;
-	background: black;
-	border-style: none;
-	padding: 0px;
+	color: white;
+	background: #444;
+	border: solid 1px #666;
+	border-radius: 5px;
+	padding: 1px;
 	cursor: pointer;
 }
 
@@ -146,12 +177,12 @@ input.fileupload
 /* main text area */
 textarea
 {	
-	font-family: courier-new, monospace;
-	font-size: 12px; 
-	color: black;
-	background: white;
+	font: 14pt Helvetica;
+	color: white;
+	background: #0A0A0A;
 	padding: 4px;
 	border-style: none; 
 	height: 320px;
 	width: 99%;
+	border-radius: 10px;
 }
