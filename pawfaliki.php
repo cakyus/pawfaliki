@@ -423,6 +423,10 @@ function htmlHeader( $title, $config )
 	echo("</head>\n");
 	echo("<body>\n");
 
+	if (file_exists( "header.html" ))
+{
+		echo( pawfalikiReadFile( "header.html" ));
+}
 	// any errors?
 	foreach ($config['INTERNAL']['ERRORS'] as $err)
 	  echo( "<p class=\"error\">ERROR: ".$err."</p>" );
