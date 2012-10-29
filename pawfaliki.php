@@ -704,6 +704,9 @@ function wikiparse( $contents )
 	$patterns[3] = "/@@([^@]*)@@/";
 	$replacements[3] = "<a name=\\\"$1\\\"></a>";
 	
+	$patterns[5] = "/==([^=]*[^=]*)==/";
+	$replacements[5] = "<h2>$1</h2>";	
+
 	// wiki words	
 	if ( $config['SYNTAX']['WIKIWORDS'] )
 	{
