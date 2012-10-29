@@ -99,6 +99,7 @@ $config['RESTRICTED']['RestoreWiki'] = array("admin"); // only admin can restore
 
 // LOCALE: text for some titles, icons, etc - you can use wiki syntax in these for images etc...
 $config['LOCALE']['EDIT_TITLE'] = "Edit: "; // title prefix for edit pages
+$config['LOCALE']['PREVIEW_TITLE'] = "Preview: "; // title prefix for edit pages
 $config['LOCALE']['HOMEPAGE_LINK'] = "[[HomePage]]"; // link to the homepage
 $config['LOCALE']['PAGELIST_LINK'] = "[[PageList]]"; // link to the pagelist
 $config['LOCALE']['REQ_PASSWORD'] = "(locked)"; // printed next to the edit btn on a locked page
@@ -118,6 +119,8 @@ $config['LICENSE']['RestoreWiki'] = "noLicense"; // will call noLicense() functi
 // MISC: Misc stuff
 $config['MISC']['EXTERNALLINKS_NEWWINDOW'] = false; // Open external links in a new window
 $config['MISC']['REQ_PASSWORD_TEXT_IN_EDIT_BTN'] = false; // Include the req password text in the edit button
+
+$preview = false;
 
 //===========================================================================
 //===========================================================================
@@ -315,7 +318,8 @@ function authPassword( $title, $password )
 
 // update the wiki - save/edit/backup/restore/cancel
 function updateWiki( &$mode, $title, $config )
-{	
+{
+	global $preview;	
 	$contents = false;
 	$backupEnabled = $config['BACKUP']['ENABLE'];
 	// cleanup any temp files
@@ -380,6 +384,16 @@ function updateWiki( &$mode, $title, $config )
 			$mode="edit";
 	}
 	
+	if ( $mode=="preview" )
+	{
+		if ( isset($_POST['contents']) )
+		{
+			$contents = stripslashes( $_POST['contents'] );
+
+			$preview = $contents;	
+		}
+		$mode = "edit";
+	}
 	// cancel a page edit
 	if ($mode=="cancel")
 	{
@@ -1126,7 +1140,8 @@ function printWikiSyntax()
 
 // display a wiki page
 function displayPage( $title, &$mode, $contents="" )
-{ 	
+{ 
+	global $preview;	
 	global $config;
 
 	// handle special pages 
@@ -1176,6 +1191,7 @@ function displayPage( $title, &$mode, $contents="" )
 				$contents = "This is the page for ".$title."!";
 				$mode = "editnew";
 			}
+			$preview = $contents;
 			break;
 	}
 	
@@ -1198,7 +1214,8 @@ function displayPage( $title, &$mode, $contents="" )
 			break;			
 		case "edit": case "editnew":
 		  echo( "<form action=\"".$_SERVER['PHP_SELF']."?page=".$title."\" method=\"post\">\n" );
-		  echo( "<textarea name=\"contents\" cols=\"80\" rows=\"24\">".$contents."</textarea>\n" );	
+		  echo( "<textarea name=\"contents\" cols=\"80\" rows=\"24\">".$contents."</textarea>\n" );
+		  echo( "<h2>".$config['LOCALE']['PREVIEW_TITLE']."</h2>"."<div id=\"preview\" class=\"wiki_body\">".wikiparse( $preview )."</div>\n");	
 		  break;
 	}    	
 }
@@ -1285,6 +1302,7 @@ function displayControls( $title, &$mode )
 					echo(wikiparse($config['LOCALE']['PASSWORD_TEXT'])); 
 					echo("<input name=\"password\" type=\"password\" class=\"pass\" size=\"17\" />");
 				}
+				echo( "\t\t\t\t\t<input name=\"mode\" value=\"preview\" TYPE=\"submit\" />\n" );
 				echo( "\t\t\t\t\t<input name=\"mode\" value=\"save\" TYPE=\"submit\" />\n" );
 				echo( "\t\t\t\t\t<input name=\"mode\" value=\"cancel\" TYPE=\"submit\" />\n" );
 				echo( "\t\t\t\t\t</p>\n" );
@@ -1292,6 +1310,7 @@ function displayControls( $title, &$mode )
 				break;
 			case "editnew":
 				echo( "\t\t\t\t\t<p>\n" );
+				echo( "\t\t\t\t\t<input name=\"mode\" value=\"preview\" TYPE=\"submit\" />\n" );
 				if (isLocked($title))
 				{
 					echo(wikiparse($config['LOCALE']['PASSWORD_TEXT'])); 
