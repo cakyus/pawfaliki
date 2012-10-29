@@ -37,12 +37,16 @@ $config['INTERNAL'] = array('VERBATIM', 'ERRORS', 'DATA'); // used internally
 $config['INTERNAL']['VERBATIM'] = array();
 $config['INTERNAL']['ERRORS'] = array();
 $config['INTERNAL']['DATA'] = array();
+$config['GIT'] = array();
 
 //================
 //================
 // CONFIGURATION
 //================
 //================
+
+$config['GIT']['ENABLE'] = true;
+
 $config['CONFIGFILE'] = ""; // filename for an additonal configuration file
 
 // GENERAL: General configuration stuff
@@ -186,6 +190,17 @@ function emailChanges( $title, $contents )
 	}
 }
 
+// commit changes to git
+function commitChanges( $title )
+{
+	global $config;
+	if ( $config['GIT']['ENABLE'] )
+	{	
+		// git commit -a -m 'Edited by $_SERVER['REMOTE_ADDR']'
+		shell_exec( "cd ".pageDir()." && git add '".$title."' && git commit -m 'Edit by ".$_SERVER['REMOTE_ADDR']."'" );
+	}
+
+}
 // writes a file to disk
 function writeFile( $title, $contents )
 {
@@ -195,11 +210,13 @@ function writeFile( $title, $contents )
 		return 1;
 	}
 	
-	if (@fwrite( $fd, $contents ) === FALSE)
+	if (@fwrite( $fd, $contents."\n" ) === FALSE)
 	{
 		error("Cannot write to server's file: ".pagePath( $title ));
 		return 2;
 	}
+
+	commitChanges( $title );
 	
 	// email page changes
 	emailChanges( $title, $contents );
@@ -230,7 +247,7 @@ function pawfalikiReadDir($path)
 	{
 		while (false !== ($file = readdir($handle))) 
 		{
-			if ($file != "." && $file != "..") 
+			if ( $file[0] != '.' ) 
 			{
 				$results[] = $path."/".$file;
 			}
@@ -512,7 +529,7 @@ function webpagelink( $text )
 		{
 			$src = $_SERVER['PHP_SELF']."?page=".$src;
 			$window = "_self";
-			$resultstr = "<a href=\"".$src."\" onclick=\"target='$window';\">".$desc."</a>";
+			$resultstr = "<a class=\"wiki\" href=\"".$src."\" onclick=\"target='$window';\">".$desc."</a>";
 		}
 		elseif ($src[0]=="#") // maybe its an anchor link
 		{
@@ -532,7 +549,7 @@ function webpagelink( $text )
 	}
 	else
 	{		
-		$resultstr = "<a href=\"".$src."\" onclick=\"target='$window';\">".$desc."</a>";			
+		$resultstr = "<a class=\"external\" href=\"".$src."\" onclick=\"target='$window';\">".$desc."</a>";			
 	}
 	return verbatim( $resultstr );
 }
@@ -586,9 +603,9 @@ function image( $text )
      $valign=" vertical-align: ".$results[5].";";
   $resultstr="";
   if ($size>0)
-     $resultstr = "<img" . $src. " style=\"border:0pt none;" . $width . 
+     $resultstr = "<img" . $src. " " . $width . 
      	$height . $align . $valign . "\"" .$desc . " />";
-  return verbatim( $resultstr );
+  return verbatim( "<a href=\"".$results[0]."\">".$resultstr."</a>" );
 }
 
 // get some verbatim text
