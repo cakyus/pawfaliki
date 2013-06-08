@@ -1,0 +1,2 @@
+all:
+	@gitg -c
