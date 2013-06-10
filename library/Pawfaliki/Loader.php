@@ -16,25 +16,28 @@ class Loader {
      * Autoloader
      **/
 
-    private static function load($className) {
+    public static function load($className) {
 
         if (class_exists($className)) {
-            return false;
+            return true;
         }
 
         // autoload library
         $classFile = LIBRARY_PATH.'/'.str_replace('\\','/',$className).'.php';
 
         if (is_readable($classFile)) {
-            return require_once($classFile);
+            require_once($classFile);
+			return true;
         }
 
 		// autoload application library
         $classFile = APPLICATION_PATH.'/'.str_replace('\\','/',$className).'.php';
 
         if (is_readable($classFile)) {
-            return require_once($classFile);
+            require_once($classFile);
+			return true;
         }
 
+		return false;
     }
 }
