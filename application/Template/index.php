@@ -2,9 +2,7 @@
 
 <article class="entry">
     <header>
-        <h2>
-            <?php echo htmlentities($this->title); ?>
-        </h2>
+        <h1><?php echo $this->title; ?></h1>
     </header>
     <div class="entry-content">
         <?php echo $this->content; ?>
