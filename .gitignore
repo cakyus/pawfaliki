@@ -1,3 +1,6 @@
 # Komodo Edit
 *.komodoproject
 .komodotools
+
+# Geany
+*.geany
