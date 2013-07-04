@@ -2,17 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link href="style.css" rel="stylesheet" />
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+        <link href="pawfaliki/pawfaliki.css" rel="stylesheet" media="screen" />
         <title><?php echo htmlentities($this->title); ?></title>
-        <style>
-
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-
-        </style>
     </head>
     <body>
 
@@ -24,12 +16,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Pawfaliki</a>
+          <a class="brand" href="#Index">Pawfaliki</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="#about">Recent Changes</a></li>
-              <li><a href="#about">Edit Page</a></li>
-              <li><a href="#contact">History</a></li>
+              <li><a href="#!RecentChanges">Recent Changes</a></li>
+              <li><a href="#!Edit">Edit Page</a></li>
+              <li><a href="#!History">History</a></li>
             </ul>
             <form class="navbar-form pull-right form-search">
               <input class="span4 input-medium search-query" type="text" placeholder="Search">
