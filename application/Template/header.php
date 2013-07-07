@@ -20,8 +20,8 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="#!RecentChanges">Recent Changes</a></li>
-              <li><a href="#!Edit">Edit Page</a></li>
-              <li><a href="#!History">History</a></li>
+              <li><a id="command-edit" href="#!Edit">Edit Page</a></li>
+              <li><a id="command-history" href="#!History">History</a></li>
             </ul>
             <form class="navbar-form pull-right form-search">
               <input class="span4 input-medium search-query" type="text" placeholder="Search">
