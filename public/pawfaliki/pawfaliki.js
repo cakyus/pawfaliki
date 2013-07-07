@@ -1,6 +1,54 @@
 
 var Pawfaliki = {};
 
+Pawfaliki.load = function(href){
+
+    if (href.indexOf('#') > 0){
+        var name = href.substr(href.indexOf('#')+1);
+    } else{
+        // default page
+        var name = 'Index';
+    }
+
+    if (name.substr(0,1) == '!'){
+
+        // show special pages
+        name = name.substr(1);
+
+        if (name == 'RecentChanges'){
+            var changes = Pawfaliki.models.changes;
+            // @todo pageSize, pageNumber
+            return changes.show();
+        }
+
+        if (name == 'Login'){
+            var changes = Pawfaliki.models.changes;
+            // @todo pageSize, pageNumber
+            return changes.show();
+        }
+
+    } else{
+        // show wiki page
+        Pawfaliki.controllers.page(name);
+    }
+
+};
+
+Pawfaliki.controllers = {};
+
+Pawfaliki.controllers.page = function(name) {
+
+    var page = Pawfaliki.models.page;
+
+    page.name = name;
+
+    if (page.get()){
+        return page.show();
+    }
+
+    // @todo show error, ie. page not found
+};
+
 Pawfaliki.models = {};
 
 Pawfaliki.models.page = {
@@ -39,49 +87,13 @@ Pawfaliki.models.response = {
     }
 };
 
-Pawfaliki.load = function(href){
-
-    if (href.indexOf('#') > 0){
-        var name = href.substr(href.indexOf('#')+1);
-    } else{
-        // default page
-        var name = 'Index';
-    }
-
-    if (name.substr(0,1) == '!'){
-
-        // show special pages
-        name = name.substr(1);
-
-        if (name == 'RecentChanges'){
-
-            var changes = Pawfaliki.models.changes;
-
-            // @todo pageSize, pageNumber
-            return changes.show();
-        }
-
-    } else{
-
-        // show wiki page
-        var page = Pawfaliki.models.page;
-
-        page.name = name;
-
-        if (page.get()){
-            return page.show();
-        }
-
-        // @todo show error, ie. page not found
-    }
-
-};
-
 Pawfaliki.views = {};
 
 Pawfaliki.views.page = {
     show: function(page) {
         Pawfaliki.templates.show('page');
+        $('#command-edit').attr('href', '#!Edit '+page.title);
+        $('#command-history').attr('href', '#!History '+page.title);
         $('.template-page h1').html(page.title);
     }
 };
